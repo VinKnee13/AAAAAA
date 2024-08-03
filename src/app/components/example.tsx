@@ -11,6 +11,11 @@ const Example = () => {
                 <h1>
                     test branch
                 </h1>
+                <table>
+                    <th>
+                        <td>test</td>
+                    </th>
+                </table>
                 
             </div>
         </>

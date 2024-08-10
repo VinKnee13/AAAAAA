@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 
-//test
-
 // Define a type for the staff member objects
 type StaffMember = {
   id: string;

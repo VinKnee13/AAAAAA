@@ -1,10 +1,15 @@
 import React from 'react';
 
-
 export default function facilityManagment() {
     return (
         <main className="flex min-h-screen flex-col items-center justify-around p-24">
-            <h1 className="text-4xl ">Inventory Management System</h1>
+            <h1 className="text-4xl mb-8">Inventory Management System</h1>
+
+            <div className="flex space-x-4 mb-4">
+                <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                    Add Item
+                </button>
+            </div>
 
             <table className="table-auto border-separate border-spacing-1">
                 <thead>
@@ -19,6 +24,7 @@ export default function facilityManagment() {
                         <th className="p-2">Qty_in_Stock</th>
                         <th className="p-2">Threshold</th>
                         <th className="p-2">Re-order</th>
+                        <th className="p-2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +39,14 @@ export default function facilityManagment() {
                         <td className="p-2 text-right">2</td>
                         <td className="p-2 text-right">1</td>
                         <td className="p-2">No</td>
+                        <td className="p-2 flex space-x-2">
+                            <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">
+                                Edit
+                            </button>
+                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                                Remove
+                            </button>
+                        </td>
                     </tr>
                     <tr>
                         <td className="p-2 text-right">2</td>
@@ -45,6 +59,14 @@ export default function facilityManagment() {
                         <td className="p-2 text-right">5</td>
                         <td className="p-2 text-right">5</td>
                         <td className="p-2">Yes</td>
+                        <td className="p-2 flex space-x-2">
+                            <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">
+                                Edit
+                            </button>
+                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                                Remove
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

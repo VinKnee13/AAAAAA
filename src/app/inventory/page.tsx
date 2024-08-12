@@ -1,7 +1,28 @@
+'use client'
 import React from 'react';
+import { useItems } from '../inventory/useItems';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
-export default function facilityManagment() {
+const queryClient = new QueryClient();
+
+// define Item object
+interface Item {
+    ID: number;
+    SKU: string;
+    Description: string;
+    Category: string;
+    Unit: string;
+    Size: string;
+    Par_level: number;
+    Stock_on_hand: number;
+    Threshold: number;
+    Re_order: boolean;
+}
+
+export default function InventoryManagement() {
+
     return (
+        <QueryClientProvider client = {queryClient}>
         <main className="flex min-h-screen flex-col items-center justify-around p-24">
             <h1 className="text-4xl mb-8">Inventory Management System</h1>
 
@@ -11,65 +32,70 @@ export default function facilityManagment() {
                 </button>
             </div>
 
-            <table className="table-auto border-separate border-spacing-1">
-                <thead>
-                    <tr className="bg-blue-500 text-white">
-                        <th className="p-2">Item_ID</th>
-                        <th className="p-2">SKU</th>
-                        <th className="p-2">Prod_Name</th>
-                        <th className="p-2">Category</th>
-                        <th className="p-2">Unit</th>
-                        <th className="p-2">Size</th>
-                        <th className="p-2">Par_Level</th>
-                        <th className="p-2">Qty_in_Stock</th>
-                        <th className="p-2">Threshold</th>
-                        <th className="p-2">Re-order</th>
-                        <th className="p-2">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td className="p-2 text-right">1</td>
-                        <td className="p-2">FK0001</td>
-                        <td className="p-2">Face Mask</td>
-                        <td className="p-2">PPE</td>
-                        <td className="p-2">Box</td>
-                        <td className="p-2 text-right">100</td>
-                        <td className="p-2 text-right">5</td>
-                        <td className="p-2 text-right">2</td>
-                        <td className="p-2 text-right">1</td>
-                        <td className="p-2">No</td>
-                        <td className="p-2 flex space-x-2">
-                            <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">
-                                Edit
-                            </button>
-                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-                                Remove
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="p-2 text-right">2</td>
-                        <td className="p-2">TP0001</td>
-                        <td className="p-2">Toilet Paper</td>
-                        <td className="p-2">Cleaning</td>
-                        <td className="p-2">Box</td>
-                        <td className="p-2 text-right">50</td>
-                        <td className="p-2 text-right">10</td>
-                        <td className="p-2 text-right">5</td>
-                        <td className="p-2 text-right">5</td>
-                        <td className="p-2">Yes</td>
-                        <td className="p-2 flex space-x-2">
-                            <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">
-                                Edit
-                            </button>
-                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
-                                Remove
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <InventoryTable />
+
         </main>
+        </QueryClientProvider>
     );
 }
+
+
+function InventoryTable() {
+
+    const { data: items, isLoading, error } = useItems(); // load the items data 
+
+    // if the data takes long to load let the user know
+    if (isLoading) {
+     return <div>Loading...</div>
+    }
+
+    if (error) {
+        return <div>Error loading items.</div>
+    }
+
+    return (
+    <table className="table-auto border-separate border-spacing-1">
+        <thead>
+            <tr className="bg-blue-500 text-white">
+                <th className="p-2">Item_ID</th>
+                <th className="p-2">SKU</th>
+                <th className="p-2">Prod_Name</th>
+                <th className="p-2">Category</th>
+                <th className="p-2">Unit</th>
+                <th className="p-2">Size</th>
+                <th className="p-2">Par_level</th>
+                <th className="p-2">Stock_on_hand</th>
+                <th className="p-2">Threshold</th>
+                <th className="p-2">Re-order</th>
+                <th className="p-2">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            { items.map((item: Item) => (
+                <tr key={item.ID}>
+                    <td className="p-2 text-right">{item.ID}</td>
+                    <td className="p-2">{item.SKU}</td>
+                    <td className="p-2">{item.Description}</td>
+                    <td className="p-2">{item.Category}</td>
+                    <td className="p-2">{item.Unit}</td>
+                    <td className="p-2 text-right">{item.Size}</td>
+                    <td className="p-2 text-right">{item.Par_level}</td>
+                    <td className="p-2 text-right">{item.Stock_on_hand}</td>
+                    <td className="p-2 text-right">{item.Threshold}</td>
+                    <td className="p-2">{item.Re_order? 'Yes' : 'No'}</td>
+                    <td className="p-2 flex space-x-2">
+                        <button className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-2 rounded">
+                            Edit
+                        </button>
+                        <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+    );
+}
+   
+        

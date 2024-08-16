@@ -1,23 +1,11 @@
 'use client'
 import React from 'react';
-import { useItems } from '../inventory/useItems';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { fetchItems, Item } from '../inventory/useItems';
+import { useQuery, QueryClient, QueryClientProvider } from 'react-query';
 
 const queryClient = new QueryClient();
 
-// define Item object
-interface Item {
-    ID: number;
-    SKU: string;
-    Description: string;
-    Category: string;
-    Unit: string;
-    Size: string;
-    Par_level: number;
-    Stock_on_hand: number;
-    Threshold: number;
-    Re_order: boolean;
-}
+
 
 export default function InventoryManagement() {
 
@@ -42,14 +30,14 @@ export default function InventoryManagement() {
 
 function InventoryTable() {
 
-    const { data: items, isLoading, error } = useItems(); // load the items data 
+    const { data: items, isLoading, isError } = useQuery<Item[]>('items', fetchItems); // load the items data 
 
     // if the data takes long to load let the user know
     if (isLoading) {
      return <div>Loading...</div>
     }
 
-    if (error) {
+    if (isError) {
         return <div>Error loading items.</div>
     }
 
@@ -71,7 +59,7 @@ function InventoryTable() {
             </tr>
         </thead>
         <tbody>
-            { items.map((item: Item) => (
+            { items?.map((item: Item) => (
                 <tr key={item.ID}>
                     <td className="p-2 text-right">{item.ID}</td>
                     <td className="p-2">{item.SKU}</td>
